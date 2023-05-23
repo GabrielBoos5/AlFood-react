@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { IPaginacao } from '../../interfaces/IPaginacao';
 import IRestaurante from '../../interfaces/IRestaurante';
 import style from './ListaRestaurantes.module.scss';
 import Restaurante from './Restaurante';
+import { IPaginacao } from '../../interfaces/IPaginacao';
 
 const ListaRestaurantes = () => {
 
@@ -11,9 +11,9 @@ const ListaRestaurantes = () => {
   const [proximaPagina, setProximaPagina] = useState('')
 
   useEffect(() => {
-    // obter restaurantes
     axios.get<IPaginacao<IRestaurante>>('http://localhost:8000/api/v1/restaurantes/')
       .then(resposta => {
+        console.log(resposta);
         setRestaurantes(resposta.data.results)
         setProximaPagina(resposta.data.next)
       })
@@ -25,9 +25,10 @@ const ListaRestaurantes = () => {
   const verMais = () => {
     axios.get<IPaginacao<IRestaurante>>(proximaPagina)
       .then(resposta => {
-        setRestaurantes([...restaurantes, ...resposta.data.results])
-        setProximaPagina(resposta.data.next)
-      })
+        console.log(resposta);
+        setRestaurantes([...restaurantes, ...resposta.data.results]);
+        setProximaPagina(resposta.data.next);
+      })  
       .catch(erro => {
         console.log(erro)
       })
